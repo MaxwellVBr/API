@@ -37,8 +37,6 @@ public class ProdutosController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-
-
     @PutMapping("/{id}")
     public void alterarProdutos(@PathVariable Long id, @RequestBody ProdutosRequestDTO produtosData){
         Produtos produto = repository.findById(id)

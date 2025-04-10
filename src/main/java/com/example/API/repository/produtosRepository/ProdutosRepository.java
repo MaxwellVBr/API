@@ -1,6 +1,6 @@
-package com.example.API.repository;
+package com.example.API.repository.produtosRepository;
 
-import com.example.API.model.Produtos;
+import com.example.API.model.produtos.Produtos;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

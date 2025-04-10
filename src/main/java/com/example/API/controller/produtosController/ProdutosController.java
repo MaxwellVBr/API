@@ -1,9 +1,9 @@
-package com.example.API.controller;
+package com.example.API.controller.produtosController;
 
-import com.example.API.model.Produtos;
-import com.example.API.model.ProdutosRequestDTO;
-import com.example.API.repository.ProdutosRepository;
-import com.example.API.model.ProdutosResponseDTO;
+import com.example.API.model.produtos.Produtos;
+import com.example.API.model.produtos.ProdutosRequestDTO;
+import com.example.API.repository.produtosRepository.ProdutosRepository;
+import com.example.API.model.produtos.ProdutosResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping("produtos")
 public class ProdutosController {
+
+    public record MensagemResponse(String mensagem) {}
 
     @Autowired
     private ProdutosRepository repository;
@@ -31,10 +33,10 @@ public class ProdutosController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> salvarProdutos(@RequestBody ProdutosRequestDTO produtosData){
+    public void salvarProdutos(@RequestBody ProdutosRequestDTO produtosData){
         Produtos produtos = new Produtos(produtosData);
         repository.save(produtos);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return;
     }
 
     @PutMapping("/{id}")
@@ -46,8 +48,11 @@ public class ProdutosController {
     }
 
     @DeleteMapping("/{id}")
-    public void DeletarProdutos(@PathVariable Long id){
+    public ResponseEntity<MensagemResponse> DeletarProdutos(@PathVariable Long id){
         repository.deleteById(id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new MensagemResponse("Produto deletado com sucesso"));
     }
 
 

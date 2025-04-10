@@ -1,4 +1,4 @@
-package com.example.API.model;
+package com.example.API.model.produtos;
 
 public record ProdutosRequestDTO(String nome, String descricao, Integer preco) {
     public void atualizarEntidade(Produtos produto) {

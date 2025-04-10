@@ -1,4 +1,4 @@
-package com.example.API.model;
+package com.example.API.model.produtos;
 
 public record ProdutosResponseDTO(Long idProduto, String nome, String descricao, Integer preco ) {
     public ProdutosResponseDTO(Produtos produtos){

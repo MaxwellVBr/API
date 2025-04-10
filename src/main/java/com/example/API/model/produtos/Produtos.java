@@ -1,4 +1,4 @@
-package com.example.API.model;
+package com.example.API.model.produtos;
 
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;

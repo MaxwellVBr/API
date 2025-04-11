@@ -22,38 +22,55 @@ public class ProdutosController {
     private ProdutosRepository repository;
 
     @GetMapping
-    public List<ProdutosResponseDTO> getAll(){
+    public ResponseEntity<List<ProdutosResponseDTO>> getAll(){
         List<ProdutosResponseDTO> listProdutos = repository.findAll().stream().map(ProdutosResponseDTO::new).toList();
-        return listProdutos;
+
+        if (listProdutos.isEmpty()){
+            return ResponseEntity.noContent().build(); // 204 No Content
+        }
+
+        return ResponseEntity.ok(listProdutos); // 200 OK com a lista
     }
     @GetMapping("/buscar")
-    public List<ProdutosResponseDTO> buscarPorNome(@RequestParam String nome) {
+    public ResponseEntity<List<ProdutosResponseDTO>> buscarPorNome(@RequestParam String nome) {
         List<Produtos> produtos = repository.findByNomeContainingIgnoreCase(nome);
-        return produtos.stream().map(ProdutosResponseDTO::new).toList();
+        List<ProdutosResponseDTO> listProdutos = produtos.stream().map(ProdutosResponseDTO::new).toList();
+
+        if (listProdutos.isEmpty()){
+            return ResponseEntity.noContent().build(); // 204 No Content
+        }
+
+        return ResponseEntity.ok(listProdutos); // 200 OK com a lista
     }
 
     @PostMapping
-    public void salvarProdutos(@RequestBody ProdutosRequestDTO produtosData){
+    public ResponseEntity<Void> salvarProdutos(@RequestBody ProdutosRequestDTO produtosData){
         Produtos produtos = new Produtos(produtosData);
         repository.save(produtos);
-        return;
+        return ResponseEntity.status(HttpStatus.CREATED).build(); // 201 Created
     }
 
     @PutMapping("/{id}")
-    public void alterarProdutos(@PathVariable Long id, @RequestBody ProdutosRequestDTO produtosData){
+    public ResponseEntity<Void> alterarProdutos(@PathVariable Long id, @RequestBody ProdutosRequestDTO produtosData){
         Produtos produto = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
         produtosData.atualizarEntidade(produto);
         repository.save(produto);
+        return ResponseEntity.noContent().build(); // 204 No Content
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<MensagemResponse> DeletarProdutos(@PathVariable Long id){
+        if (!repository.existsById(id)) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND) // 404
+                    .body(new MensagemResponse("Produto não encontrado"));
+        }
+
         repository.deleteById(id);
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(new MensagemResponse("Produto deletado com sucesso"));
+                .status(HttpStatus.OK) // 200 sem body
+                .build();
     }
-
 
 }

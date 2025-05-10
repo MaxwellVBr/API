@@ -43,6 +43,7 @@ public class ProdutosController {
         return ResponseEntity.ok(listProdutos); // 200 OK com a lista
     }
 
+
     @PostMapping
     public ResponseEntity<Void> salvarProdutos(@RequestBody ProdutosRequestDTO produtosData){
         Produtos produtos = new Produtos(produtosData);

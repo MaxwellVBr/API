@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@RequestMapping("login")
+@RequestMapping("logi")
 public class UsuarioController {
 
     public record MensagemResponse(String mensagem) {}
@@ -36,7 +36,7 @@ public class UsuarioController {
     public ResponseEntity<Void> alterarUsuario(@PathVariable Long id, @RequestBody UsuarioRequestDTO usuarioData){
         Usuario usuario = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
-        usuarioData.atualizarEntidade(usuario);
+      //  usuarioData.atualizarEntidade(usuario);
         repository.save(usuario);
         return ResponseEntity.noContent().build() ; // 200 OK Sem Body
     }

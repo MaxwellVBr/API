@@ -45,8 +45,8 @@ public class Usuario implements UserDetails {
         return senha;
     }
 
-    public String getRole() {
-        return senha;
+    public UserPapel  getRole() {
+        return role;
     }
 
     public void setId(Long id) {

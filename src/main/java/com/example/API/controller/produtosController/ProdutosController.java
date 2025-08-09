@@ -7,11 +7,12 @@ import com.example.API.model.produtos.ProdutosResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS})
 @RestController
 @RequestMapping("produtos")
 public class ProdutosController {
@@ -46,7 +47,7 @@ public class ProdutosController {
 
 
     @PostMapping
-    public ResponseEntity<Void> salvarProdutos(@RequestBody ProdutosRequestDTO produtosData){
+    public ResponseEntity salvarProdutos(@RequestBody @Validated ProdutosRequestDTO produtosData){
         Produtos produtos = new Produtos(produtosData);
         repository.save(produtos);
         return ResponseEntity.status(HttpStatus.CREATED).build(); // 201 Created
